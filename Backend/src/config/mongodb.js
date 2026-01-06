@@ -1,6 +1,4 @@
-import mongoose, { connect } from "mongoose";
-import dotenv from "dotenv";
-
+import mongoose from "mongoose";
 
 const connectToDatabase = async () => {
   try {
@@ -10,7 +8,7 @@ const connectToDatabase = async () => {
       .catch((err) => console.error("MongoDB connection error:", err));
   } catch (error) {
     console.error("MongoDB connection error:", error);
-    next(error);
+    throw error;
   }
 };
 
