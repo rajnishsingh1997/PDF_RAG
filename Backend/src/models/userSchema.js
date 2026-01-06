@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import validator from "validator";
 
 const userSchema = new mongoose.Schema(
   {
@@ -15,17 +16,21 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
       index: true,
+      validator: {
+        validator: validator.isEmail,
+        message: "Invalid email format",
+      },
     },
 
     password: {
       type: String,
       required: true,
       minlength: 8,
-      select: false, 
+      select: false,
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 
