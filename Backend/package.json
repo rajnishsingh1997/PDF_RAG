@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon --legacy-watch --watch src --ext js,json src/app.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11"
+  }
+}
