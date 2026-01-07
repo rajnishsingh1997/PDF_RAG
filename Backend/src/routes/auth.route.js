@@ -1,14 +1,8 @@
 import express from "express";
+import userDataValidator from "../middleware/auth.middleware.js";
+import loginController from '../controller/auth.controller.js'
+
 const authRouter = express.Router();
-authRouter.post("/login", (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      throw new Error("Email and password are required");
-    }
-  } catch (error) {
-    console.log(error.message);
-    next(error);
-  }
-});
+
+authRouter.post("/login", userDataValidator, loginController);
 export default authRouter;
