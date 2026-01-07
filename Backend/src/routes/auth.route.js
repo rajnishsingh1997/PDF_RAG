@@ -1,8 +1,11 @@
 import express from "express";
-import userDataValidator from "../middleware/auth.middleware.js";
-import loginController from '../controller/auth.controller.js'
+import {userDataValidator,signupUserDataValidator} from "../middleware/auth.middleware.js";
+import {loginController,signupController} from '../controller/auth.controller.js'
 
 const authRouter = express.Router();
 
 authRouter.post("/login", userDataValidator, loginController);
+
+authRouter.post("/signup",signupUserDataValidator,signupController);
+
 export default authRouter;
