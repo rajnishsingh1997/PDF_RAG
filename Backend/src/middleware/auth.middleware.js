@@ -8,9 +8,9 @@ export const userDataValidator = (req, res, next) => {
 
 export const signupUserDataValidator = (req, res, next) => {
   const { email, password, name } = req.body;
-  console.log(email, password, name);
+ 
   if (!email || !password || !name) {
-    return next(new Error("email, password and username are required."));
+    return next(new Error("email, password and name are required."));
   }
   next();
 };
