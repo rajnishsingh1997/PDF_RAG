@@ -3,9 +3,7 @@ import jwt from "jsonwebtoken";
 const verifyToken = (req, res, next) => {
   const authHeader = req.header("Authorization");
 
-  console.log("Authorization Header:", authHeader);
-
-  if (!authHeader) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return next(new Error("Access Denied. No token provided."));
   }
 
@@ -14,7 +12,7 @@ const verifyToken = (req, res, next) => {
   if (!token) {
     return next(new Error("Access Denied. No token provided."));
   }
-  
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = decoded.userId;
