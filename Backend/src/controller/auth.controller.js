@@ -5,6 +5,7 @@ export const loginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const response = await loginService(email, password);
+    res.status(201).json(response);
   } catch (error) {
     console.log("Error in loginController:", error);
     next(error);
