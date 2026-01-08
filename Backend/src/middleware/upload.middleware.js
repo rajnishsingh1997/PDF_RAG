@@ -10,7 +10,6 @@ const upload = multer({
 }).single("uploadedFile");
 
 const uploadFileMulterMiddleware = (req, res, next) => {
-  console.log("Inside upload middleware");
   upload(req, res, (err) => {
     if (err) {
       console.error(err);
@@ -19,7 +18,6 @@ const uploadFileMulterMiddleware = (req, res, next) => {
     if (!req.file) {
       return next(new Error("No file uploaded"));
     }
-    console.log(req.file);
     next();
   });
 };

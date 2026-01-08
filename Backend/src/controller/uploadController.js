@@ -1,7 +1,7 @@
-import multer from "multer";
-import path from "path";
-const uploadController = (req,res,next) => {
 
+const uploadController = (req, res, next) => {
+  const uploadedFile = req.file;
+  //rest of the logic to handle the uploaded file
 };
 
 export default uploadController;
