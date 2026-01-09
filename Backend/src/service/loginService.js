@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
 
-
 const loginService = async (email, password) => {
   try {
     const user = await User.findOne({ email });
@@ -13,8 +12,7 @@ const loginService = async (email, password) => {
     if (!passwordMatch) {
       return { error: "Invalid credentials" };
     }
-    req.userID = user.user._id
-    
+
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
