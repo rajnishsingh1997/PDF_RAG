@@ -1,4 +1,5 @@
 import AWS from "aws-sdk";
+import { v4 as uuidv4 } from "uuid";
 
 AWS.config.update({
   region: "ap-south-1",
@@ -8,11 +9,15 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 const uploadDocService = async (uploadedFile,userID) => {
+  const documentId = uuidv4();
+  const s3Key = `documents/${userID}/${documentId}.pdf`;
+  
   const params = {
     Bucket: "pdf-rag-storage",
-    Key: uploadedFile.originalname,
+    Key: s3Key,
     Body: uploadedFile.buffer,
   };
+  
   try{
     const result = await s3.upload(params).promise();
     return{

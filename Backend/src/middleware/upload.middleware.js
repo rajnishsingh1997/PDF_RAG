@@ -7,6 +7,13 @@ const upload = multer({
   limits: {
     fileSize: 10 * 1024 * 1024,
   },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype !== "application/pdf") {
+      cb(new Error("Only PDF files are allowed"));
+    } else {
+      cb(null, true);
+    }
+  },
 }).single("uploadedFile");
 
 const uploadFileMulterMiddleware = (req, res, next) => {
