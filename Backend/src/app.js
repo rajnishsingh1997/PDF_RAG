@@ -4,12 +4,14 @@ import authRouter from "./routes/auth.route.js";
 import connectToDatabase from "./config/mongodb.js";
 import globalErrorHandler from "./middleware/globalErrorHandler.js";
 import uploadRouter from "./routes/upload.route.js";
+import documentRouter from "./routes/document.route.js";
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/upload", uploadRouter);
+app.use("/api/doc", documentRouter);
 app.use(globalErrorHandler);
 
 connectToDatabase()
