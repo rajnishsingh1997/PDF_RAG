@@ -39,5 +39,6 @@ const documentSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-const Document = mongoose.model("Document", documentSchema);
+const Document =
+  mongoose.models.Document || mongoose.model("Document", documentSchema);
 export default Document;

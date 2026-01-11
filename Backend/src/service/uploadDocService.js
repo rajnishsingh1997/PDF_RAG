@@ -1,6 +1,6 @@
 import AWS from "aws-sdk";
 import { v4 as uuidv4 } from "uuid";
-import Document from "../models/DocumentSchema.js";
+import Document from "../models/documentSchema.js";
 
 AWS.config.update({
   region: "ap-south-1",
