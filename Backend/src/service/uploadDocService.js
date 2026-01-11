@@ -1,14 +1,8 @@
-import AWS from "aws-sdk";
+import s3Client from "../utils/s3Client.js";
 import { v4 as uuidv4 } from "uuid";
 import Document from "../models/documentSchema.js";
 
-AWS.config.update({
-  region: "ap-south-1",
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
-const s3 = new AWS.S3();
-
+const s3 = s3Client();
 const uploadDocService = async (uploadedFile, userID) => {
   const documentId = uuidv4();
   const s3Key = `documents/${userID}/${documentId}.pdf`;

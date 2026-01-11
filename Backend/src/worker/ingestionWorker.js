@@ -1,16 +1,10 @@
 import Document from "../models/documentSchema.js";
-import AWS from "aws-sdk";
-
+import s3Client from "../utils/s3Client.js";
 import saveFileOnDrive from "../utils/saveFileOnDrive.js";
 import loadDocuments from "../utils/loadDocuments.js";
 import cleanupTempFile from "../utils/cleanupTempFile.js";
 
-AWS.config.update({
-  region: "ap-south-1",
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
-const s3 = new AWS.S3();
+const s3 = s3Client();
 
 const injectionWorker = async (documentId) => {
   try {
@@ -29,8 +23,8 @@ const injectionWorker = async (documentId) => {
     }
     const tempFilePath = await saveFileOnDrive(documentId, downloadedFile.Body);
     const docs = await loadDocuments(tempFilePath);
+    console.log(docs);
     await cleanupTempFile(tempFilePath);
-
   } catch (error) {
     console.log("Error in ingestionWorker:", error);
     throw error;
