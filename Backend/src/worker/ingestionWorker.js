@@ -27,11 +27,7 @@ const injectionWorker = async (documentId) => {
     if (!downloadedFile || !downloadedFile.Body) {
       throw new Error("Failed to download file from S3");
     }
-    const tempFilePath = path.join(os.tmpdir(), `${documentId}.pdf`);
-
-    fs.writeFileSync(tempFilePath, downloadedFile.Body);
-    const loader = new PDFLoader(tempFilePath);
-    const docs = await loader.load();
+    
     console.log(docs);
   } catch (error) {
     console.log("Error in ingestionWorker:", error);
