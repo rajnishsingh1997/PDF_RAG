@@ -1,8 +1,9 @@
 import Document from "../models/documentSchema.js";
 import AWS from "aws-sdk";
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
+
 import saveFileOnDrive from "../utils/saveFileOnDrive.js";
 import loadDocuments from "../utils/loadDocuments.js";
+import cleanupTempFile from "../utils/cleanupTempFile.js";
 
 AWS.config.update({
   region: "ap-south-1",
@@ -28,7 +29,8 @@ const injectionWorker = async (documentId) => {
     }
     const tempFilePath = saveFileOnDrive(documentId, downloadedFile.Body);
     const docs = await loadDocuments(tempFilePath);
-
+    await cleanupTempFile(tempFilePath);
+    
   } catch (error) {
     console.log("Error in ingestionWorker:", error);
     throw error;
