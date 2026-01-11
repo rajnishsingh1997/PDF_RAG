@@ -2,8 +2,8 @@ import Document from "../models/documentSchema.js";
 import AWS from "aws-sdk";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import fs from "fs";
-import os from "os";
 import path from "path";
+import os from "os";
 
 AWS.config.update({
   region: "ap-south-1",
@@ -27,7 +27,11 @@ const injectionWorker = async (documentId) => {
     if (!downloadedFile || !downloadedFile.Body) {
       throw new Error("Failed to download file from S3");
     }
-    
+    const tempDir = os.tmpdir();
+    const tempFilePath = path.join(tempDir, `${documentId}.pdf`);
+    fs.writeFileSync(tempFilePath, downloadedFile.Body);
+    const loader = new PDFLoader(tempFilePath);
+    const docs = await loader.load();
     console.log(docs);
   } catch (error) {
     console.log("Error in ingestionWorker:", error);
