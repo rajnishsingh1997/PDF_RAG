@@ -27,10 +27,10 @@ const injectionWorker = async (documentId) => {
     if (!downloadedFile || !downloadedFile.Body) {
       throw new Error("Failed to download file from S3");
     }
-    const tempFilePath = saveFileOnDrive(documentId, downloadedFile.Body);
+    const tempFilePath = await saveFileOnDrive(documentId, downloadedFile.Body);
     const docs = await loadDocuments(tempFilePath);
     await cleanupTempFile(tempFilePath);
-    
+
   } catch (error) {
     console.log("Error in ingestionWorker:", error);
     throw error;
