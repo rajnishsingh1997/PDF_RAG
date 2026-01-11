@@ -1,4 +1,4 @@
 const ingestDocService = async (documentId) => {
-    // Simulate ingestion logic
+    return { message: `Ingesting document with ID: ${documentId}` };
 };
 export default ingestDocService;
