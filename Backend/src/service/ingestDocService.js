@@ -1,13 +1,15 @@
 import DocumentSchema from "../models/documentSchema.js";
+import injectionWorker from "../worker/ingestionWorker.js";
 
 const ingestDocService = async (documentId) => {
   try {
     const relevantDoc = await DocumentSchema.findOne({ documentId });
+
     if (!relevantDoc) {
       throw new Error("Document not found");
     }
 
-    if (relevantDoc.status !== "UPLOADED") {
+    if (relevantDoc.status === "PROCESSING") {
       throw new Error(
         `Document status is ${relevantDoc.status}, cannot ingest`
       );
@@ -16,7 +18,11 @@ const ingestDocService = async (documentId) => {
     relevantDoc.updatedAt = new Date();
     relevantDoc.error = null;
     await relevantDoc.save();
+    injectionWorker(documentId);
     return { message: "Document ingestion started successfully" };
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 export default ingestDocService;
