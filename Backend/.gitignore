@@ -5,3 +5,4 @@ dist
 .vscode
 logs
 npm-debug.log*
+raft_state.json
