@@ -3,7 +3,7 @@ import s3Client from "../utils/s3Client.js";
 import saveFileOnDrive from "../utils/saveFileOnDrive.js";
 import loadDocuments from "../utils/loadDocuments.js";
 import cleanupTempFile from "../utils/cleanupTempFile.js";
-import fileChucking from "../utils/fileChucking.js";
+import fileChucking from '../utils/fileChunking .js'
 
 const s3 = s3Client();
 

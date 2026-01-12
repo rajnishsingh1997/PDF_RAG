@@ -1,6 +1,6 @@
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 
-const fileChucking = async (docs) => {
+const fileChunking  = async (docs) => {
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 100,
     chunkOverlap: 0,
@@ -9,4 +9,4 @@ const fileChucking = async (docs) => {
   return splitDocs;
 };
 
-export default fileChucking;
+export default fileChunking;
