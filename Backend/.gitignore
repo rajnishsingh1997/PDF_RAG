@@ -6,3 +6,4 @@ dist
 logs
 npm-debug.log*
 raft_state.json
+qdrant_storage
