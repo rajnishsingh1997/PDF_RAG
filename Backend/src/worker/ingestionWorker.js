@@ -1,9 +1,10 @@
+import { OpenAIEmbeddings } from "@langchain/openai";
 import Document from "../models/documentSchema.js";
 import s3Client from "../utils/s3Client.js";
 import saveFileOnDrive from "../utils/saveFileOnDrive.js";
 import loadDocuments from "../utils/loadDocuments.js";
 import cleanupTempFile from "../utils/cleanupTempFile.js";
-import fileChucking from '../utils/fileChunking .js'
+import fileChucking from "../utils/fileChunking .js";
 
 const s3 = s3Client();
 
@@ -25,7 +26,11 @@ const injectionWorker = async (documentId) => {
     const tempFilePath = await saveFileOnDrive(documentId, downloadedFile.Body);
     const docs = await loadDocuments(tempFilePath);
     const chunkedDocs = await fileChucking(docs);
-    console.log("Chunked Docs:", chunkedDocs);
+    
+    const embeddings = new OpenAIEmbeddings({
+      model: "text-embedding-3-small",
+    });
+
     await cleanupTempFile(tempFilePath);
   } catch (error) {
     console.log("Error in ingestionWorker:", error);
