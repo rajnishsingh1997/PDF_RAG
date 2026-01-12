@@ -3,6 +3,7 @@ import s3Client from "../utils/s3Client.js";
 import saveFileOnDrive from "../utils/saveFileOnDrive.js";
 import loadDocuments from "../utils/loadDocuments.js";
 import cleanupTempFile from "../utils/cleanupTempFile.js";
+import fileChucking from "../utils/fileChucking.js";
 
 const s3 = s3Client();
 
@@ -23,7 +24,8 @@ const injectionWorker = async (documentId) => {
     }
     const tempFilePath = await saveFileOnDrive(documentId, downloadedFile.Body);
     const docs = await loadDocuments(tempFilePath);
-    console.log(docs);
+    const chunkedDocs = await fileChucking(docs);
+    console.log("Chunked Docs:", chunkedDocs);
     await cleanupTempFile(tempFilePath);
   } catch (error) {
     console.log("Error in ingestionWorker:", error);
