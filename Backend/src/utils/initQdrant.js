@@ -11,7 +11,7 @@ const ensureCollection = async () => {
   if (!exists) {
     await client.createCollection("embedding-collection-rag", {
       vectors: {
-        size: 1536, // text-embedding-3-small
+        size: 1536,
         distance: "Cosine",
       },
     });
