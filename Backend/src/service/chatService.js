@@ -25,8 +25,8 @@ const chatService = async (question, userId) => {
         must: [{ key: "metadata.userId", match: { value: userId } }],
       },
     });
-    
-    const results = await retriever._getRelevantDocuments(question);
+
+    const results = await retriever.invoke(question);
     return results;
   } catch (error) {
     console.log(error);

@@ -12,10 +12,9 @@ const chatController = async (req, res) => {
     }
     const response = await chatService(question, userId);
     return res.status(200).json({ answer: response });
-    
   } catch (error) {
     console.log(error);
-    throw new Error("Error in chat controller");
+    next(error);
   }
 };
 export default chatController;
