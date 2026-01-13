@@ -8,9 +8,10 @@ import cleanupTempFile from "../utils/cleanupTempFile.js";
 import updateDocumentStatus from "../utils/statusUpdate.js";
 import createChunking from "../utils/createChunking.js";
 import ensureCollection from "../utils/initQdrant.js";
+import { Document as LangchainDocument } from "@langchain/core/documents";
 
 const s3 = s3Client();
-
+console.log("Ingestion Worker Loaded");
 const injectionWorker = async (documentId) => {
   let tempFilePath = null;
 
@@ -34,24 +35,26 @@ const injectionWorker = async (documentId) => {
     }
 
     tempFilePath = await saveFileOnDrive(documentId, downloadedFile.Body);
-
     const docs = await loadDocuments(tempFilePath);
     const chunkedDocs = await createChunking(docs);
-   
-    const enrichedChunks = chunkedDocs.map((chunk) => ({
-      ...chunk,
-      metadata: {
-        ...chunk.metadata,
-        documentId,
-        userId,
-      },
-    }));
+
+    const enrichedChunks = chunkedDocs.map(
+      (chunk) =>
+        new LangchainDocument({
+          pageContent: chunk.pageContent,
+          metadata: {
+            ...chunk.metadata,
+            documentId,
+            userId,
+          },
+        })
+    );
 
     const embeddings = new OpenAIEmbeddings({
       model: "text-embedding-3-small",
     });
     await ensureCollection();
-    
+
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
       embeddings,
       {

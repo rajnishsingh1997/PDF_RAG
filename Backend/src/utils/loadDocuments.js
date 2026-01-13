@@ -4,6 +4,7 @@ const loadDocuments = async (filePath) => {
   try {
     const loader = new PDFLoader(filePath);
     const docs = await loader.load();
+    
     return docs;
   } catch (error) {
     console.error("Error loading documents:", error);

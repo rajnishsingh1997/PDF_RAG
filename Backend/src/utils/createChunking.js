@@ -3,8 +3,8 @@ import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 const createChunking = async (docs) => {
   try {
     const splitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 100,
-      chunkOverlap: 0,
+      chunkSize: 200,
+      chunkOverlap: 100,
     });
     const splitDocs = await splitter.splitDocuments(docs);
     return splitDocs;

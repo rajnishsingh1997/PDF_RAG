@@ -20,14 +20,14 @@ const chatService = async (question, userId) => {
       }
     );
     const retriever = vectorStore.asRetriever({
-      k: 4,
+      k: 6,
       filter: {
         must: [{ key: "metadata.userId", match: { value: userId } }],
       },
     });
 
     const results = await retriever.invoke(question);
-    return results;
+    console.log("Retrieved results:", results);
   } catch (error) {
     console.log(error);
     throw new Error("Error in chat service");

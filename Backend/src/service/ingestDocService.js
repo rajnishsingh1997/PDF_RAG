@@ -4,7 +4,7 @@ import injectionWorker from "../worker/ingestionWorker.js";
 const ingestDocService = async (documentId) => {
   try {
     const relevantDoc = await DocumentSchema.findOne({ documentId });
-    console.log("Relevant Document:", relevantDoc);
+    
     if (!relevantDoc) {
       throw new Error("Document not found");
     }
