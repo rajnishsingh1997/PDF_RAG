@@ -37,7 +37,7 @@ const injectionWorker = async (documentId) => {
 
     const docs = await loadDocuments(tempFilePath);
     const chunkedDocs = await createChunking(docs);
-    console.log(chunkedDocs);
+   
     const enrichedChunks = chunkedDocs.map((chunk) => ({
       ...chunk,
       metadata: {
