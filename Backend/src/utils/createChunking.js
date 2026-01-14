@@ -1,6 +1,7 @@
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 
 const createChunking = async (docs) => {
+  
   try {
     const splitter = new RecursiveCharacterTextSplitter({
       chunkSize: 200,

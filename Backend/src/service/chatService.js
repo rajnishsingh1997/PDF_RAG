@@ -3,6 +3,7 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 import ensureCollection from "../utils/initQdrant.js";
 
 const chatService = async (question, userId) => {
+  console.log("inside chat service");
   try {
     if (!question || !userId) {
       throw new Error("Invalid parameters");
@@ -22,7 +23,12 @@ const chatService = async (question, userId) => {
     const retriever = vectorStore.asRetriever({
       k: 6,
       filter: {
-        must: [{ key: "metadata.userId", match: { value: userId } }],
+        must: [
+          {
+            key: "userId",
+            match: { value: userId },
+          },
+        ],
       },
     });
 
