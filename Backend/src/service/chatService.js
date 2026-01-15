@@ -32,7 +32,18 @@ const chatService = async (question, userId) => {
     });
     const results = await retriever.invoke(question);
     console.log("Retrieved results", results);
-    return results;
+    const context = results.map((res) => res.pageContent).join("\n---\n");
+    const systemPromptBasedOnContext = generateSystemPrompt(context);
+    const llm = new ChatOpenAI({
+      model: "gpt-4o-mini",
+      temperature: 0,
+    });
+    const llmResponse = await llm.invoke([
+      { role: "system", content: systemPromptBasedOnContext },
+      { role: "user", content: question },
+    ]);
+
+    return llmResponse?.content ?? "";
   } catch (error) {
     console.log("Error in chatService:", error);
     throw error;
