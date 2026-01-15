@@ -12,7 +12,7 @@ const chatController = async (req, res) => {
       throw new Error("User ID is required");
     }
     const response = await chatService(question, userId);
-    return res.status(200).json({ context: response });
+    return res.status(200).json({ answer: response });
   } catch (error) {
     console.log(error);
     next(error);

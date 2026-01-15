@@ -1,11 +1,9 @@
 import { QdrantVectorStore } from "@langchain/qdrant";
-import { OpenAIEmbeddings } from "@langchain/openai";
+import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import ensureCollection from "../utils/initQdrant.js";
+import generateSystemPrompt from "../utils/systemPrompt.js";
 
 const chatService = async (question, userId) => {
-  console.log("inside chat service");
-  console.log("Question:", question);
-  console.log("UserId:", userId);
   try {
     if (!question || !userId) {
       throw new Error("Invalid parameters");
@@ -35,7 +33,20 @@ const chatService = async (question, userId) => {
     });
 
     const results = await retriever.invoke(question);
-    console.log("Retrieved results:", results);
+    console.log("Retrieved results", results);
+    const context = results.map((res) => res.pageContent).join("\n---\n");
+    const systemPromptBasedOnContext = generateSystemPrompt(context);
+
+    const llm = new ChatOpenAI({
+      model: "gpt-4o-mini",
+      temperature: 0,
+    });
+    const llmResponse = await llm.invoke([
+      { role: "system", content: systemPromptBasedOnContext },
+      { role: "user", content: question },
+    ]);
+
+    return llmResponse?.content ?? "";
   } catch (error) {
     console.log(error);
     throw new Error("Error in chat service");
