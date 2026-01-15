@@ -4,6 +4,8 @@ import ensureCollection from "../utils/initQdrant.js";
 
 const chatService = async (question, userId) => {
   console.log("inside chat service");
+  console.log("Question:", question);
+  console.log("UserId:", userId);
   try {
     if (!question || !userId) {
       throw new Error("Invalid parameters");
@@ -25,8 +27,8 @@ const chatService = async (question, userId) => {
       filter: {
         must: [
           {
-            key: "userId",
-            match: { value: userId },
+            key: "metadata.userId",
+            match: { value: String(userId) },
           },
         ],
       },

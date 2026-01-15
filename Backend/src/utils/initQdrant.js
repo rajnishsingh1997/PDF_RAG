@@ -17,7 +17,7 @@ export default async function ensureCollection() {
     });
 
     await client.createPayloadIndex("embedding-collection-rag", {
-      field_name: "userId",
+      field_name: "metadata.userId",
       field_schema: "keyword",
     });
   }
