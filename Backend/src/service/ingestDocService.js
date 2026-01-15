@@ -18,7 +18,7 @@ const ingestDocService = async (documentId) => {
     relevantDoc.updatedAt = new Date();
     relevantDoc.error = null;
     await relevantDoc.save();
-    injectionWorker(documentId);
+    await injectionWorker(documentId);
     return { message: "Document ingestion started successfully" };
   } catch (error) {
     console.log(error.message);

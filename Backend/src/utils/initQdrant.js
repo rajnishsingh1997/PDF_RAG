@@ -8,7 +8,6 @@ export default async function ensureCollection() {
     const exists = collections.collections.some(
       (c) => c.name === "embedding-collection-rag"
     );
-    console.log("Collection exists:", exists);
     if (!exists) {
       await client.createCollection("embedding-collection-rag", {
         vectors: {

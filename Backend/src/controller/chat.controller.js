@@ -1,7 +1,6 @@
 import chatService from "../service/chatService.js";
 
 const chatController = async (req, res,next) => {
-  console.log("inside chat controller");
   try {
     const { question } = req.body;
     const userId = req.userId;

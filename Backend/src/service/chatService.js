@@ -31,7 +31,9 @@ const chatService = async (question, userId) => {
       },
     });
     const results = await retriever.invoke(question);
-    console.log("Retrieved results", results);
+    if (results.length === 0) {
+      return "I couldn't find any relevant information in your documents to answer this question.";
+    }
     const context = results.map((res) => res.pageContent).join("\n---\n");
     const systemPromptBasedOnContext = generateSystemPrompt(context);
     const llm = new ChatOpenAI({

@@ -15,15 +15,13 @@ const injectionWorker = async (documentId) => {
   let tempFilePath = null;
 
   try {
-    console.log("Ingestion start", { documentId });
+    
     const document = await Document.findOne({ documentId });
     if (!document) {
       throw new Error("Document not found");
     }
 
     const { userId, s3Key } = document;
-    console.log("Starting ingestion for userId:", userId);
-
     const downloadedFile = await s3
       .getObject({
         Bucket: "pdf-rag-storage",
@@ -36,17 +34,8 @@ const injectionWorker = async (documentId) => {
     }
 
     tempFilePath = await saveFileOnDrive(documentId, downloadedFile.Body);
-    console.log("File saved to temp path", tempFilePath);
-
     const docs = await loadDocuments(tempFilePath);
-    console.log("Loaded documents", { count: docs.length });
-
     const chunkedDocs = await createChunking(docs);
-    console.log("Chunked documents", {
-      chunks: chunkedDocs.length,
-      sampleLength: chunkedDocs[0]?.pageContent?.length ?? 0,
-    });
-
     const enrichedChunks = chunkedDocs.map(
       (chunk) =>
         new LangchainDocument({
@@ -63,8 +52,6 @@ const injectionWorker = async (documentId) => {
       model: "text-embedding-3-small",
     });
     await ensureCollection();
-    console.log("Qdrant collection ready");
-
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
       embeddings,
       {
@@ -73,7 +60,6 @@ const injectionWorker = async (documentId) => {
       }
     );
     await vectorStore.addDocuments(enrichedChunks);
-    console.log("Documents added to vector store", enrichedChunks.length);
 
     await updateDocumentStatus(documentId, "READY", null);
     console.log("Document marked READY", { documentId });
