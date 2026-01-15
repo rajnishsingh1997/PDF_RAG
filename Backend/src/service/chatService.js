@@ -12,7 +12,6 @@ const chatService = async (question, userId) => {
       model: "text-embedding-3-small",
     });
     await ensureCollection();
-
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
       embeddings,
       {
@@ -31,25 +30,12 @@ const chatService = async (question, userId) => {
         ],
       },
     });
-
     const results = await retriever.invoke(question);
     console.log("Retrieved results", results);
-    const context = results.map((res) => res.pageContent).join("\n---\n");
-    const systemPromptBasedOnContext = generateSystemPrompt(context);
-
-    const llm = new ChatOpenAI({
-      model: "gpt-4o-mini",
-      temperature: 0,
-    });
-    const llmResponse = await llm.invoke([
-      { role: "system", content: systemPromptBasedOnContext },
-      { role: "user", content: question },
-    ]);
-
-    return llmResponse?.content ?? "";
+    return results;
   } catch (error) {
-    console.log(error);
-    throw new Error("Error in chat service");
+    console.log("Error in chatService:", error);
+    throw error;
   }
 };
 

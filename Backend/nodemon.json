@@ -1,0 +1,15 @@
+{
+  "watch": ["src"],
+  "ext": "js,json",
+  "ignore": [
+    "src/**/temp.js",
+    "src/**/temp/**",
+    "src/**/tmp/**",
+    "src/**/uploads/**",
+    "src/**/downloads/**",
+    "src/qdrant_storage/**",
+    "src/**/*.pdf",
+    "src/**/*.log"
+  ],
+  "verbose": true
+}
