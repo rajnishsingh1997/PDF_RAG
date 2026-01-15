@@ -19,7 +19,7 @@ const ingestDocService = async (documentId) => {
     relevantDoc.error = null;
     await relevantDoc.save();
     await injectionWorker(documentId);
-    return { message: "Document ingestion started successfully" };
+    return { message: "Document ingestion completed successfully" };
   } catch (error) {
     console.log(error.message);
     throw error;
