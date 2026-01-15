@@ -15,10 +15,10 @@ export default async function ensureCollection() {
         distance: "Cosine",
       },
     });
-
-    await client.createPayloadIndex("embedding-collection-rag", {
-      field_name: "metadata.userId",
-      field_schema: "keyword",
-    });
   }
+
+  await client.createPayloadIndex("embedding-collection-rag", {
+    field_name: "metadata.userId",
+    field_schema: "keyword",
+  });
 }

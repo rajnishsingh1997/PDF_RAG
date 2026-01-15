@@ -34,6 +34,9 @@ const chatService = async (question, userId) => {
 
     const results = await retriever.invoke(question);
     console.log("Retrieved results", results);
+    if (!results.length) {
+      return "I don't know based on the provided document.";
+    }
     const context = results.map((res) => res.pageContent).join("\n---\n");
     const systemPromptBasedOnContext = generateSystemPrompt(context);
 
