@@ -1,5 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/userSchema.js";
+import jwt from "jsonwebtoken";
+
 const signinService = async (email, password, name) => {
   try {
     const existingUser = await User.findOne({ email });
@@ -14,7 +16,10 @@ const signinService = async (email, password, name) => {
     });
 
     await newUser.save();
-    return { message: "User registered successfully" };
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    return { message: "User registered successfully", token, user: newUser };
   } catch (error) {
     console.log("Error in signinService:", error);
     throw error;
