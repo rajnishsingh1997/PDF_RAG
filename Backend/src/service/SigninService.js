@@ -19,7 +19,12 @@ const signinService = async (email, password, name) => {
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    return { message: "User registered successfully", token, user: newUser };
+    const userPayloadToSend = {
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+    };
+    return { message: "User registered successfully", token, user: userPayloadToSend };
   } catch (error) {
     console.log("Error in signinService:", error);
     throw error;

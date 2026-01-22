@@ -16,7 +16,12 @@ const loginService = async (email, password) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    return { message: "Login successful", "token":token,"user":user };
+    const userPayloadToSend = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    };
+    return { message: "Login successful", token: token, user: userPayloadToSend };
   } catch (error) {
     console.log("Error in loginService:", error);
     throw error;
